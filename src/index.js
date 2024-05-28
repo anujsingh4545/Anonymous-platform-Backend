@@ -17,17 +17,15 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("New socket", socket.id);
 
-  socket.on("disconnect", () => {
-    console.log(`User disconnected: ${socket.id}`);
-  });
+
   socket.on("newFile", (data) => {
-    // console.log("called");
+    console.log("called");
     io.emit("newFile", data);
   });
 
   socket.on("upvote", (data) => {
     const { userId, postId, upvoterId, vote } = data;
-    // console.log(data);
+    console.log(data);
     const currentDate = new Date();
 
     const formattedDate = currentDate.toLocaleDateString();
@@ -36,7 +34,7 @@ io.on("connection", (socket) => {
   });
   socket.on("comment", (data) => {
     const { userId, postId, comment } = data;
-    // console.log(data);
+    console.log(data);
     const currentDate = new Date();
 
     const formattedDate = currentDate.toLocaleDateString();
@@ -45,13 +43,16 @@ io.on("connection", (socket) => {
   });
   socket.on("Dcomment", (data) => {
     const { userId, postId, comment } = data;
-    // console.log(data);
+    console.log(data);
     const currentDate = new Date();
-
     const formattedDate = currentDate.toLocaleDateString();
     const formattedTime = currentDate.toLocaleTimeString();
     io.emit(`${userId}Dcomment`, { postId, userId, comment, time: formattedTime, date: formattedDate });
   });
+
+   socket.on("disconnect", () => {
+     console.log(`User disconnected: ${socket.id}`);
+   });
 });
 
 app.use(cors());
